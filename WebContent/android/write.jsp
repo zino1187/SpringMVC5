@@ -50,12 +50,23 @@ img {
 	border: 0px
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
 	//insert int database !!!
 	function regist(){
-		form1.action="/reply";
-		form1.submit();
+		$.ajax({
+			url:"/board",
+			type:"POST",
+			dataType:"application/json",
+			data:{
+				"writer":form1.writer.value,
+				"title":form1.title.value,
+				"content":form1.content.value
+			}, success:function(result){
+				alert("서버로부터의 데이터는 "+result);
+			}});
 	}
+	
 </script>
 </head>
 <body>
@@ -100,7 +111,7 @@ img {
 			<tr>
 				<td height="30" align="right" style="padding-right: 2px;"><img
 					src="/images/write_btin.gif" width="61" height="20"
-					onClick="regist()"> <a href="list.jsp"><img
+					onClick="list()"> <a href="list.jsp"><img
 						src="/images/list_btn.gif" width="61" height="20"></a></td>
 			</tr>
 			<tr>

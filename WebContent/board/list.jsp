@@ -1,4 +1,4 @@
-<%@page import="com.mvc.board.domain.Board"%>
+<%@page import="com.mvc.board.domain.ReBoard"%>
 <%@page import="com.mvc.board.common.PageBean"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=utf-8"%>
@@ -6,7 +6,7 @@
 	PageBean pb = new PageBean();
 %>
 <%
-	List<Board> list=(List)request.getAttribute("list");
+	List<ReBoard> list=(List)request.getAttribute("list");
 	out.print("게시물 갯수는 "+list.size());
 	
 	pb.init(list.size(), request);
@@ -64,11 +64,12 @@ img{border:0px}
 		  %>
 		    <%for(int i=1;i<=pb.getPageSize();i++){ %>
 		    <%if(num<1)break; %>
-		    <%Board board=list.get(curPos++); %>
+		    <%ReBoard board=list.get(curPos++); %>
 		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
 			  <td width="50"><%=num-- %></td>
-			  <td width="303">
-			  <a href="/board/detail.do?board_id=<%=board.getBoard_id()%>"><%=board.getTitle() %>[<%=board.getCount() %>]</a></td>
+			  <td width="303" align="left">
+			  <a href="/board/<%=board.getReboard_id()%>"><%=board.getTitle() %></a></td>
+			  
 			  <td width="100"><%=board.getWriter() %></td>
 			  <td width="100"><%=board.getRegdate().substring(0,10)%></td>
 			  <td width="50"><%=board.getHit() %></td>

@@ -1,7 +1,7 @@
-<%@page import="com.mvc.board.domain.Board"%>
+<%@page import="com.mvc.board.domain.ReBoard"%>
 <%@ page contentType="text/html;charset=utf-8"%>
 <%
-	Board board = (Board) request.getAttribute("board");
+	ReBoard board = (ReBoard) request.getAttribute("board");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -74,7 +74,7 @@ img {
 		$.post("/reply/regist.do", {
 			"writer" : form2.writer.value, 
 			"msg" : form2.msg.value, 
-			"board_id" : <%=board.getBoard_id()%>
+			"board_id" : <%=board.getReboard_id()%>
 		}, function(data, status){
 			if(data=="ok"){
 				//서버에 리스트를 요청!!
@@ -86,7 +86,7 @@ img {
 	}
 	
 	function getList(){
-		$.get("/reply/list.do?board_id=<%=board.getBoard_id()%>", function(data, status){
+		$.get("/reply/list.do?board_id=<%=board.getReboard_id()%>", function(data, status){
 			//alert(data[0].writer);
 			//문서내의 replyTable 에  tr과 td 자식요소를 동적으로 추가!!
 			var replyTable=document.getElementById("replyTable");
@@ -118,10 +118,17 @@ img {
 			}
 		});
 	}
+	
+	function replyForm(){
+		//답변 등록 
+		form3.action="/board";
+		form3.submit();
+		
+	}
 </script>
 </head>
 <body onLoad="getList()">	
-		<input type="hidden" name="board_id" value="<%=board.getBoard_id()%>">
+		<input type="hidden" name="board_id" value="<%=board.getReboard_id()%>">
 		<table id="box" align="center" width="603" border="0" cellpadding="0"
 			cellspacing="0">
 			<form name="form1" method="post">
@@ -164,7 +171,7 @@ img {
 			<tr>
 				<td height="30" align="right" style="padding-right: 2px;"><img
 					src="/images/write_btin.gif" width="61" height="20"
-					onClick="edit()"> <img src="/images/delete_btn.gif"
+					onClick="replyForm()"> <img src="/images/delete_btn.gif"
 					width="61" height="20" onClick="del()"> 
 					<a href="/board/list.do"><img
 						src="/images/list_btn.gif" width="61" height="20" border="0"></a>
@@ -174,6 +181,53 @@ img {
 				<td height="1" bgcolor="#CCCCCC"></td>
 			</tr>
 			</form>
+			
+			<form name="form3" method="post">
+			<tr>
+				<td height="2" bgcolor="#6395FA"><img src="/images/line_01.gif"></td>
+			</tr>
+			<tr>
+				<td height="1" bgcolor="#CCCCCC"></td>
+			</tr>
+			<tr>
+				<td id="list"><table width="100%" border="0" cellspacing="0"
+						cellpadding="0">
+						<tr>
+							<td width="100">&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr id="writer">
+							<td height="25" align="center">작성자</td>
+							<td><input type="text" name="writer"></td>
+						</tr>
+						<tr id="title">
+							<td height="25" align="center">제목</td>
+							<td><input type="text" name="title"></td>
+						</tr>
+						<tr id="content">
+							<td align="center">내용</td>
+							<td><textarea name="content" style=""></textarea></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+					</table></td>
+			</tr>
+			<tr>
+				<td height="30" align="right" style="padding-right: 2px;"><img
+					src="/images/write_btin.gif" width="61" height="20"
+					onClick="replyForm()"> <img src="/images/delete_btn.gif"
+					width="61" height="20" onClick="del()"> 
+					<a href="/board/list.do"><img
+						src="/images/list_btn.gif" width="61" height="20" border="0"></a>
+				</td>
+			</tr>
+			<tr>
+				<td height="1" bgcolor="#CCCCCC"></td>
+			</tr>
+			</form>
+			
 			<!-- 여기서 부터 댓글 테이블 영역 -->
 			<form name="form2" method="post">
 			<tr>

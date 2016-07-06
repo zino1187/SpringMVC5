@@ -12,7 +12,29 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
 		p:prefix="/"
 		p:suffix=".jsp"/>	
-
+	
+	<!-- 클라이언트가 웹브라우저일수도 있고, 안드로이드와 같은 스마트 기기일 수도
+	있으므로, 컨트롤러의 메서드가 각 기기마다 일일이 1:1 정의되어서는 안되고,
+	기존의 메서드에서 모든 요청을 처리할 수 있도록, 협상 컨텐트 리졸버를 등록한다!!
+	 -->
+	<bean id="contentNegotiationManager" 
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" 	value="false"/>
+		<property name="favorParameter" 		value="false"/>
+		<property name="ignoreAcceptHeader" 	value="false"/>
+		<property name="defaultContentType"  value="application/json"/>	
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" 	value="application/json"/>
+				<entry key="html" 	value="text/html"/>
+				<entry key="xls" 	value="application/vnd.ms-excel"/>
+				<entry key="xml" 	value="application/xml"/>
+			</map>
+		</property>				
+	</bean>
+	
+	
+	
 	
 	<!--컴포넌트 자동 생성 -->
 	<context:component-scan base-package="com.mvc">
@@ -22,7 +44,7 @@
 	
 	
 	<!-- 스프링 mvc에서 각종 어노테이션을 지원하기 위해서 아래의 설정 -->
-	<mvc:annotation-driven/>
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
 	<!-- 요청 uri 가 이제부터는 /* 이기 때문에 , 정적자원(image, html 등)은 
 		컨트롤러로 요청을 받지 않도록 설정하자
 	 -->	
